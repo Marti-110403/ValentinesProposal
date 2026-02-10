@@ -1,2 +1,2 @@
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxPp7MVg0QE36zlC2uCZefrMyoOx16UEaNy8jRYngbEjoZnyNnmN9r8mPFrK95_hJ0n/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbyfJKNCHSKVNn4iaMkDtREjUMUrIHAcbZ7CwBJKbj5ceTtLldiYVev9nPYIjUuKWorX/exec";
 const DEBUG_LOG = false;

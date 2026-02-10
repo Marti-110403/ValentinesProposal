@@ -43,5 +43,4 @@ function doPost(e) {
 1. Presiona `YES` (debe mandar POST al endpoint).
 1. Revisa la hoja `responses` en el Google Sheet.
 
-**Nota importante**
-El endpoint es publico. Si quieres, puedes agregar validacion simple despues (por ejemplo, un token compartido o filtrado de dominios).
+

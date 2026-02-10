@@ -404,26 +404,24 @@
         async function sendAnswerEvent(answer) {
             try {
                 if (!ENDPOINT_URL || ENDPOINT_URL.includes("PASTE_")) {
-                    if (typeof DEBUG_LOG !== "undefined" && DEBUG_LOG) {
-                        console.warn("ENDPOINT_URL no configurado.");
-                    }
                     return;
                 }
 
-                const payload = {
+                const payload = new URLSearchParams({
                     answer: answer,
                     timestamp: new Date().toISOString(),
                     userAgent: navigator.userAgent,
                     pageUrl: location.href,
                     referrer: document.referrer || ""
-                };
-
-                const body = new URLSearchParams(payload);
+                });
 
                 await fetch(ENDPOINT_URL, {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                    },
+                    body: payload.toString(),
                     mode: "no-cors",
-                    body: body.toString(),
                     keepalive: true
                 });
             } catch (err) {

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENDPOINT_URL="https://script.google.com/macros/s/AKfycbxPp7MVg0QE36zlC2uCZefrMyoOx16UEaNy8jRYngbEjoZnyNnmN9r8mPFrK95_hJ0n/exec"
+ENDPOINT_URL="https://script.google.com/macros/s/AKfycbyfJKNCHSKVNn4iaMkDtREjUMUrIHAcbZ7CwBJKbj5ceTtLldiYVev9nPYIjUuKWorX/exec"
 
 curl -X POST "$ENDPOINT_URL" \
     -H "Content-Type: application/json" \
