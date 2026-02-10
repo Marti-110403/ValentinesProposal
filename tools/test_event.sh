@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENDPOINT_URL="PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"
+ENDPOINT_URL="https://script.google.com/macros/s/AKfycbxPp7MVg0QE36zlC2uCZefrMyoOx16UEaNy8jRYngbEjoZnyNnmN9r8mPFrK95_hJ0n/exec"
 
 curl -X POST "$ENDPOINT_URL" \
     -H "Content-Type: application/json" \

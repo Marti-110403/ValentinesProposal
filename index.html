@@ -403,36 +403,29 @@
 
         async function sendAnswerEvent(answer) {
             try {
-                const endpoint = typeof ENDPOINT_URL === "string" ? ENDPOINT_URL.trim() : "";
-                const debugEnabled = typeof DEBUG_LOG !== "undefined" && DEBUG_LOG;
-
-                if (!endpoint || endpoint.includes("PASTE_")) {
-                    if (debugEnabled) {
-                        console.warn("ENDPOINT_URL no configurado. Evento no enviado.");
+                if (!ENDPOINT_URL || ENDPOINT_URL.includes("PASTE_")) {
+                    if (typeof DEBUG_LOG !== "undefined" && DEBUG_LOG) {
+                        console.warn("ENDPOINT_URL no configurado.");
                     }
                     return;
                 }
 
                 const payload = {
-                    answer,
+                    answer: answer,
                     timestamp: new Date().toISOString(),
                     userAgent: navigator.userAgent,
-                    pageUrl: window.location.href,
+                    pageUrl: location.href,
                     referrer: document.referrer || ""
                 };
 
-                const response = await fetch(endpoint, {
+                const body = new URLSearchParams(payload);
+
+                await fetch(ENDPOINT_URL, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(payload),
+                    mode: "no-cors",
+                    body: body.toString(),
                     keepalive: true
                 });
-
-                if (!response.ok && debugEnabled) {
-                    console.warn("Endpoint respondio con estado no exitoso:", response.status);
-                }
             } catch (err) {
                 console.warn("No se pudo enviar evento:", err);
             }
