@@ -189,12 +189,14 @@
         <button class="btn" id="noBtn">NO</button>
     </div>
 
+    <script src="config.js"></script>
     <script>
         const phrase = document.getElementById("phrase");
         const decorations = document.getElementById("decorations");
         const noBtn = document.getElementById("noBtn");
         const yesBtn = document.getElementById("yesBtn");
         const msg = document.getElementById("msg");
+        let lastNoAttemptAt = 0;
 
         const words = [
             [12, 13, 14, 15, 16],
@@ -399,6 +401,43 @@
         window.addEventListener("load", initNoButtonPosition);
         window.addEventListener("resize", initNoButtonPosition);
 
+        async function sendAnswerEvent(answer) {
+            try {
+                const endpoint = typeof ENDPOINT_URL === "string" ? ENDPOINT_URL.trim() : "";
+                const debugEnabled = typeof DEBUG_LOG !== "undefined" && DEBUG_LOG;
+
+                if (!endpoint || endpoint.includes("PASTE_")) {
+                    if (debugEnabled) {
+                        console.warn("ENDPOINT_URL no configurado. Evento no enviado.");
+                    }
+                    return;
+                }
+
+                const payload = {
+                    answer,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    pageUrl: window.location.href,
+                    referrer: document.referrer || ""
+                };
+
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload),
+                    keepalive: true
+                });
+
+                if (!response.ok && debugEnabled) {
+                    console.warn("Endpoint respondio con estado no exitoso:", response.status);
+                }
+            } catch (err) {
+                console.warn("No se pudo enviar evento:", err);
+            }
+        }
+
         noBtn.addEventListener("mouseenter", () => {
             msg.textContent = "";
             moveNoButton();
@@ -406,19 +445,25 @@
 
         noBtn.addEventListener("pointerdown", (e) => {
             e.preventDefault();
-            msg.textContent = "Respuesta incorrecta";
+            msg.textContent = "Respuesta incorrecta jsjsjs";
             moveNoButton();
+            lastNoAttemptAt = Date.now();
+            sendAnswerEvent("NO_ATTEMPT");
         });
 
         noBtn.addEventListener("click", (e) => {
             e.preventDefault();
-            msg.textContent = "Respuesta incorrecta";
+            msg.textContent = "Respuesta incorrecta jsjsjs";
             moveNoButton();
+            if (Date.now() - lastNoAttemptAt > 450) {
+                sendAnswerEvent("NO_ATTEMPT");
+            }
         });
 
         yesBtn.addEventListener("click", () => {
             msg.textContent = "Excelenteeee. Nos vemos el 15 de febrero :) ";
             noBtn.style.display = "none";
+            sendAnswerEvent("YES");
         });
     </script>
 </body>
